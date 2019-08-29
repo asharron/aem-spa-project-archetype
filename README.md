@@ -91,7 +91,7 @@ $ mvn archetype:generate \
      -DarchetypeCatalog=internal \
      -DarchetypeGroupId=com.adobe.cq.spa.archetypes  \
      -DarchetypeArtifactId=aem-spa-project-archetype  \
-     -DarchetypeVersion=1.0.5-SNAPSHOT \
+     -DarchetypeVersion=1.1.1-SNAPSHOT \
 ```
 
 Please note that properties declared in [archetype-metadata.xml](src/main/resources/META-INF/maven/archetype-metadata.xml) with `defaultValue` are not asked during interactive mode and are defaulted to suggested values. 
@@ -114,3 +114,39 @@ $ mvn archetype:generate -B \
      -DcomponentGroup=<component-group> \
      -DoptionFrontend=react
 ```
+
+### Troubleshooting
+
+In the event that you run the build commands, crawl the maven archetype, and get this error when invoking the archetype generation command
+
+```
+The desired archetype does not exist (com.adobe.cq.spa.archetypes:aem-spa-project-archetype:1.X.X-SNAPSHOT)
+````
+
+Then it may be that the documentation has not been updated for the latest release. To find the current version after building and crawling the archetype, open up your `~/.m2/repository/archetype-catalog.xml` file with any text editor of your choice. 
+
+This will tell you the what version of the archetype was installed. Here's an example:
+
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<archetype-catalog xsi:schemaLocation="http://maven.apache.org/plugins/maven-archetype-plugin/archetype-catalog/1.0.0 http://maven.apache.org/xsd/archetype-catalog-1.0.0.xsd"
+    xmlns="http://maven.apache.org/plugins/maven-archetype-plugin/archetype-catalog/1.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <archetypes>
+    <archetype>
+      <groupId>com.adobe.granite.archetypes</groupId>
+      <artifactId>aem-project-archetype</artifactId>
+      <version>20</version>
+      <description>aem-archetype</description>
+    </archetype>
+    <archetype>
+      <groupId>com.adobe.cq.spa.archetypes</groupId>
+      <artifactId>aem-spa-project-archetype</artifactId>
+      <version>1.1.1-SNAPSHOT</version>
+      <description>basic</description>
+    </archetype>
+  </archetypes>
+</archetype-catalog>
+```
+
+In this case, the 1.1.1-SNAPSHOT was the version installed, so that will be the value I supply to the -DarchetypeVersion argument.
